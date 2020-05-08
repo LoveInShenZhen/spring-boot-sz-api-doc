@@ -23,11 +23,11 @@ class ApiProdExceptionHandler {
 
         // 只暴露 ApiException 给api的调用方
         if (ex is ApiException) {
-            reply.ret = ex.errcode
-            reply.errMsg = ex.localizedMessage
+            reply.ret = ex.errCode
+            reply.errmsg = ex.localizedMessage
         } else {
             reply.ret = -1
-            reply.errMsg = "Internal error"
+            reply.errmsg = "Internal error"
         }
 
         logger.warn(ExceptionUtil.exceptionChainToString(ex))

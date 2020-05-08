@@ -10,6 +10,6 @@ open class ReplyBase {
     var ret = 0
 
     @Comment("错误信息. 操作成功时, 返回 OK. 操作失败时, 返回指定的错误信息.")
-    var errMsg = "OK"
+    var errmsg = "OK"
 
 }

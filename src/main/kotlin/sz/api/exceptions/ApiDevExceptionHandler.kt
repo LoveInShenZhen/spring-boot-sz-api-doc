@@ -23,15 +23,15 @@ class ApiDevExceptionHandler {
         val reply = ReplyBase()
 
         if (ex is ApiException) {
-            reply.ret = ex.errcode
-            reply.errMsg = ex.localizedMessage
+            reply.ret = ex.errCode
+            reply.errmsg = ex.localizedMessage
         } else {
             // dev 模式下, 会将异常的堆栈调用信息写入到 errMsg 里, 方便开发调试
             reply.ret = -1
-            reply.errMsg = ExceptionUtil.exceptionChainToString(ex)
+            reply.errmsg = ExceptionUtil.exceptionChainToString(ex)
         }
 
-        logger.debug(reply.errMsg)
+        logger.debug(reply.errmsg)
 
         return ResponseEntity.ok(reply)
     }

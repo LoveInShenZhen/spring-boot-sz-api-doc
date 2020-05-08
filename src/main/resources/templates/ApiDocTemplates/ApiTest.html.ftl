@@ -242,26 +242,6 @@
         });
     }
 
-    function testPostFormAPI() {
-        $('#errMsg').text('');
-        var apiurl = $("legend").html();
-        var query_str = $("#ajax_form").serialize();
-        var json_api_url = apiurl + "?" + query_str;
-
-        $("#post_form").attr("action", json_api_url);
-
-        $("#post_form").ajaxSubmit({
-            error: function () {
-                alert('error');
-            },
-            success: function (data) {
-                var highLight = Prism.highlight(JSON.stringify(data, null, 2), Prism.languages.json, 'json');
-                $("#postresponse").html(highLight);
-                showMultipleLinesErrMsg(data);
-            }
-        })
-    }
-
     function ClearPostOutput() {
         $("#postresponse").html('<code># 点击 "测试" 按钮, 等待返回结果</code>');
         $('#errMsg').text('');

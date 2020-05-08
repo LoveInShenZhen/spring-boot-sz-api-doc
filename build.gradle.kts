@@ -6,6 +6,7 @@ plugins {
 }
 
 val springBootVersion = "2.2.7.RELEASE"
+val springFrameworkVersion = "5.2.6.RELEASE"
 val jacksonVersion = "2.10.4"
 
 group = "io.github.loveinshenzhen"
@@ -19,14 +20,16 @@ repositories {
 
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-freemarker:$springBootVersion")
-    implementation("org.springframework.boot:spring-boot-starter-webflux:$springBootVersion")
-    implementation("org.springframework.boot:spring-boot-starter-web:$springBootVersion")
+    implementation("org.springframework:spring-webmvc:$springFrameworkVersion")
+    implementation("org.springframework:spring-webflux:$springFrameworkVersion")
 
     implementation(kotlin("reflect"))
     implementation(kotlin("stdlib-jdk8"))
 
     implementation("com.fasterxml.jackson.module:jackson-module-jsonSchema:$jacksonVersion")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin:$jacksonVersion")
+    implementation("com.fasterxml.jackson.datatype:jackson-datatype-jdk8:$jacksonVersion")
+    implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:$jacksonVersion")
 
     api("org.jodd:jodd-core:5.1.3")
     api("org.apache.commons:commons-lang3:3.9")

@@ -7,4 +7,4 @@ package sz.api.exceptions
 /**
  * 该异常用于描述遇到业务逻辑错误, 并且该错误可以被暴露给api接口的调用者
  */
-class ApiException(val errcode: Int = -1, errMsg: String = "") : Exception(errMsg)
+class ApiException(errMsg: String = "", val errCode: Int = -1) : Exception(errMsg)
