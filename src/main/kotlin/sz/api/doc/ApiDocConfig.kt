@@ -8,5 +8,5 @@ import org.springframework.context.annotation.Configuration
 //
 
 @Configuration
-@ComponentScan(basePackages = ["sz.api.controllers", "sz.api.exceptions"])
-class ApiDocConfig
+@ComponentScan(basePackages = ["sz.api.controllers", "sz.api.exceptions", "sz.api.resolve"])
+open class ApiDocConfig
