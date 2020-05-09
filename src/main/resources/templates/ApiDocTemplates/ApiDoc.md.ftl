@@ -18,7 +18,7 @@
 <#if apiInfo.IsPostJsonApi() && apiInfo.hasRequestBody()>
 * Post Json 的数据结构:
 ```
-${apiInfo.postJsonSchema()}
+${apiInfo.postJsonSchema!}
 ```
 </#if>
 

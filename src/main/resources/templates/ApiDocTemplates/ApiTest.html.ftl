@@ -131,7 +131,7 @@
                         <label class="control-label">Post Json 数据结构：</label>
 
                         <div class="controls" style="max-width: 800px">
-                            <pre class="language-json"><code>${apiInfo.postJsonSchema()}</code></pre>
+                            <pre class="language-json"><code>${apiInfo.postJsonSchema!}</code></pre>
                         </div>
                     </div>
 

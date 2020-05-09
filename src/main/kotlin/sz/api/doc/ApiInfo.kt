@@ -1,5 +1,6 @@
 package sz.api.doc
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import org.slf4j.LoggerFactory
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestParam
@@ -21,32 +22,31 @@ import kotlin.reflect.jvm.jvmErasure
 //
 @ExperimentalStdlibApi
 @Suppress("DuplicatedCode", "JoinDeclarationAndAssignment", "SpellCheckingInspection")
-class ApiInfo
-constructor(
-    // API url path
+class ApiInfo constructor(
+    @Comment("API url path")
     val path: String,
 
-    // API http method: GET or POST
+    @Comment("API http method: GET or POST")
     val httpMethod: String,
 
-    // API 对应的 Controller 类名称
+    @Comment("API 对应的 Controller 类名称")
     val controllerClass: String,
 
-    // API 对应的 Controller 类下的方法名称
+    @Comment("API 对应的 Controller 类下的方法名称")
     val methodName: String) {
 
-    // 返回Replay 对应的 java class name
+    @Comment("返回的 Replay 对应的类名称")
     val replyClass: String
         get() {
             return replyInfo.kotlin_class!!.javaObjectType.name
         }
 
-    // Post 时 @RequsetBody 对应的 类名称
+    @Comment("Post 时 @RequsetBody 注解修饰的参数的类名称")
     var postDataClass: String = ""
 
     private var postDataKClass: KClass<*>? = null
 
-    // Post 时 @RequsetBody 对应的 Sample 数据
+    @Comment("Post 时 @RequsetBody 注解修饰的参数的样例")
     val postJsonSample: String
         get() {
             return if (postDataKClass == null) {
@@ -56,23 +56,46 @@ constructor(
             }
         }
 
-    // API 描述
+    @Comment("Post 时, body 里的json的数据结构描述")
+    val postJsonSchema: String
+        get() {
+            val jsonSchema = FieldSchema()
+            jsonSchema.level = 0
+            jsonSchema.name = "Post Json Schema"
+            jsonSchema.desc = ""
+            jsonSchema.type = JsonDataType.OBJECT.typeName
+            jsonSchema.kotlin_class = Class.forName(this.postDataClass).kotlin
+
+            FieldSchema.resolveFields(Class.forName(this.postDataClass).kotlin, jsonSchema)
+
+            return jsonSchema.JsonSchema()
+        }
+
+    @Comment("API 接口方法功能描述")
     var apiComment: String = ""
 
+    @Comment("API 接口方法所属的分组名称")
     val groupName: String by lazy {
         apiGroup()
     }
 
-    // 返回Replay的描述信息
+    @Comment("Replay 的数据结构信息")
+    @JsonIgnore
     var replyInfo: FieldSchema
 
-    // 返回结果样例
+    @Comment("Replay 的数据结构描述")
+    val replyJsonSchema: String
+        get() {
+            return replyInfo.JsonSchema()
+        }
+
+    @Comment("返回结果样例")
     val replySampleData: String
         get() {
             return SampleJsonData(this.replyInfo.kotlin_class!!)
         }
 
-    // API 所有参数的描述
+    @Comment("API 接口参数列表")
     var params = mutableListOf<ParameterInfo>()
 
     private val logger = LoggerFactory.getLogger("sz-api-doc")
@@ -91,6 +114,19 @@ constructor(
             logger.error("ApiInfo analyse:WARN ${this.path} Abnormal")
         }
     }
+
+//    fun postJsonSchema(): String {
+//        val jsonSchema = FieldSchema()
+//        jsonSchema.level = 0
+//        jsonSchema.name = "Post Json Schema"
+//        jsonSchema.desc = ""
+//        jsonSchema.type = JsonDataType.OBJECT.typeName
+//        jsonSchema.kotlin_class = Class.forName(this.postDataClass).kotlin
+//
+//        FieldSchema.resolveFields(Class.forName(this.postDataClass).kotlin, jsonSchema)
+//
+//        return jsonSchema.JsonSchema()
+//    }
 
     fun toMarkdownStr(str: String): String {
         return str.escapeMarkdown()
@@ -184,7 +220,6 @@ constructor(
     }
 
     fun anchor(): String {
-//        return "${controllerClass}.${methodName}".replace(".", "_")
         return "${path}.${httpMethod}".replace(".", "_").replace("/", "_")
     }
 
@@ -206,23 +241,6 @@ constructor(
         return method!!.parameters.find { it.hasAnnotation<RequestBody>() } != null
     }
 
-    fun postJsonSchema(): String {
-        val jsonSchema = FieldSchema()
-        jsonSchema.level = 0
-        jsonSchema.name = "Post Json Schema"
-        jsonSchema.desc = ""
-        jsonSchema.type = JsonDataType.OBJECT.typeName
-        jsonSchema.kotlin_class = Class.forName(this.postDataClass).kotlin
-
-        FieldSchema.resolveFields(Class.forName(this.postDataClass).kotlin, jsonSchema)
-
-        return jsonSchema.JsonSchema()
-    }
-
-    fun jsonStr(): String {
-        return this.toJsonPretty()
-    }
-
     companion object {
 
         val logger = LoggerFactory.getLogger("App")!!
@@ -230,7 +248,6 @@ constructor(
         fun SampleJsonData(kClass: KClass<*>): String {
             val mockDataFunc = kClass.memberFunctions
                 .find { it.name == "mockData" }
-//                ?: return """请在 ${kClass.qualifiedName} 实现 fun mockData() { ... } 方法, 填充样例数据"""
 
             val sampleObj = kClass.java.newInstance()
 

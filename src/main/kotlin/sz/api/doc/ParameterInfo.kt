@@ -1,5 +1,6 @@
 package sz.api.doc
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import sz.api.doc.annotations.Comment
 import sz.api.tools.escapeMarkdown
 
@@ -29,6 +30,7 @@ class ParameterInfo {
     }
 
     val fullDesc: String
+        @JsonIgnore
         get() {
             val requiredDesc = if (required) "[必填]" else "[可选]"
             val full_desc = mutableListOf(desc, "[$type]", requiredDesc)
