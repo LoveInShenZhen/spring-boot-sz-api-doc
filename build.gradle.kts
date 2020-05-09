@@ -20,11 +20,12 @@ repositories {
 
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-freemarker:$springBootVersion")
-    implementation("org.springframework:spring-webmvc:$springFrameworkVersion")
-    implementation("org.springframework:spring-webflux:$springFrameworkVersion")
+    compileOnly("org.springframework:spring-webmvc:$springFrameworkVersion")
+    compileOnly("org.springframework:spring-webflux:$springFrameworkVersion")
 
     implementation(kotlin("reflect"))
     implementation(kotlin("stdlib-jdk8"))
+
 
     implementation("com.fasterxml.jackson.module:jackson-module-jsonSchema:$jacksonVersion")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin:$jacksonVersion")
