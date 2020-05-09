@@ -10,7 +10,9 @@ import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestParam
+import org.springframework.web.bind.annotation.ResponseBody
 import sz.api.doc.ApiGroup
+import sz.api.doc.annotations.Comment
 import sz.api.resolve.IDefinedApis
 import sz.api.tools.cliColor
 import java.io.StringWriter
@@ -22,6 +24,7 @@ import java.io.StringWriter
 @ExperimentalStdlibApi
 @Controller
 @Profile("api_doc")
+@Comment("API接口文档控制器")
 class ApiDocController(
     @Autowired private val definedApis: IDefinedApis,
     @Autowired freemarkerConfig: Configuration,
@@ -100,6 +103,14 @@ class ApiDocController(
         return freemarkerCfg.process("ApiDocTemplates/ApiTest.html.ftl", model).toHtmlResponse()
     }
 
+    @Comment("返回 Api 分组列表")
+    @GetMapping("/api/builtin/doc/apiInfo")
+    @ResponseBody
+    fun apiInfo(): ApiInfoReply {
+        val reply = ApiInfoReply()
+        reply.api_groups = allApi
+        return reply
+    }
 }
 
 private fun Configuration.process(templateName: String, dataModel: Any): String {

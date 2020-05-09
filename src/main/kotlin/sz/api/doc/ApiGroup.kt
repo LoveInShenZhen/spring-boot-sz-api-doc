@@ -9,6 +9,7 @@ import sz.api.tools.escapeMarkdown
 @ExperimentalStdlibApi
 class ApiGroup(@Comment("api 分组名称") val groupName: String) {
 
+    @Comment("api 列表")
     var apiInfoList: MutableList<ApiInfo> = mutableListOf()
 
     fun toMarkdownStr(str: String): String {

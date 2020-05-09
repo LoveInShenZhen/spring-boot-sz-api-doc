@@ -59,16 +59,20 @@ class ApiInfo constructor(
     @Comment("Post 时, body 里的json的数据结构描述")
     val postJsonSchema: String
         get() {
-            val jsonSchema = FieldSchema()
-            jsonSchema.level = 0
-            jsonSchema.name = "Post Json Schema"
-            jsonSchema.desc = ""
-            jsonSchema.type = JsonDataType.OBJECT.typeName
-            jsonSchema.kotlin_class = Class.forName(this.postDataClass).kotlin
+            return if (this.postDataClass.isNotBlank()) {
+                val jsonSchema = FieldSchema()
+                jsonSchema.level = 0
+                jsonSchema.name = "Post Json Schema"
+                jsonSchema.desc = ""
+                jsonSchema.type = JsonDataType.OBJECT.typeName
+                jsonSchema.kotlin_class = Class.forName(this.postDataClass).kotlin
 
-            FieldSchema.resolveFields(Class.forName(this.postDataClass).kotlin, jsonSchema)
+                FieldSchema.resolveFields(Class.forName(this.postDataClass).kotlin, jsonSchema)
 
-            return jsonSchema.JsonSchema()
+                jsonSchema.JsonSchema()
+            } else {
+                ""
+            }
         }
 
     @Comment("API 接口方法功能描述")
