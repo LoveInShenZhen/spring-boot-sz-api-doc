@@ -5,8 +5,8 @@ plugins {
     id("maven-publish")
 }
 
-val springBootVersion = "2.2.7.RELEASE"
-val springFrameworkVersion = "5.2.6.RELEASE"
+val springBootVersion = "2.3.1.RELEASE"
+val springFrameworkVersion = "5.2.7.RELEASE"
 val jacksonVersion = "2.10.4"
 
 group = "io.github.loveinshenzhen"

@@ -2,6 +2,7 @@ package sz.api.exceptions
 
 import jodd.exception.ExceptionUtil
 import org.slf4j.LoggerFactory
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.context.annotation.Profile
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.ControllerAdvice
@@ -13,7 +14,7 @@ import sz.api.reply.ReplyBase
 //
 
 @ControllerAdvice
-@Profile("api_doc", "prod")
+@ConditionalOnProperty(name = ["sz.api_doc.working_mode"], havingValue = "product")
 class ApiProdExceptionHandler {
     val logger = LoggerFactory.getLogger("App")
 

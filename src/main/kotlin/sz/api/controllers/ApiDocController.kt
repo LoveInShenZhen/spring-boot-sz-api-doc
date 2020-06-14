@@ -23,7 +23,6 @@ import java.io.StringWriter
 
 @ExperimentalStdlibApi
 @Controller
-@Profile("api_doc")
 @Comment("API接口文档控制器")
 class ApiDocController(
     @Autowired private val definedApis: IDefinedApis,
