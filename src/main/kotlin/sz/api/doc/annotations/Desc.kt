@@ -5,4 +5,4 @@ package sz.api.doc.annotations
 //
 @Target(AnnotationTarget.CLASS, AnnotationTarget.FUNCTION, AnnotationTarget.VALUE_PARAMETER, AnnotationTarget.FIELD, AnnotationTarget.PROPERTY)
 @Retention(AnnotationRetention.RUNTIME)
-annotation class Comment(val value: String = "")
+annotation class Desc(val value: String = "")

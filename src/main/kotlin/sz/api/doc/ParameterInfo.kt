@@ -1,7 +1,7 @@
 package sz.api.doc
 
 import com.fasterxml.jackson.annotation.JsonIgnore
-import sz.api.doc.annotations.Comment
+import sz.api.doc.annotations.Desc
 import sz.api.tools.escapeMarkdown
 
 
@@ -10,19 +10,19 @@ import sz.api.tools.escapeMarkdown
 //
 class ParameterInfo {
 
-    @Comment("参数名称")
+    @Desc("参数名称")
     var name: String = ""
 
-    @Comment("参数描述")
+    @Desc("参数描述")
     var desc: String = ""
 
-    @Comment("是否是必填参数")
+    @Desc("是否是必填参数")
     var required: Boolean = true
 
-    @Comment("可选参数时,参数采用的默认值")
+    @Desc("可选参数时,参数采用的默认值")
     var defaultValue: String = ""
 
-    @Comment("参数的数据类型")
+    @Desc("参数的数据类型")
     var type: String = ""
 
     fun toMarkdownStr(str: String): String {

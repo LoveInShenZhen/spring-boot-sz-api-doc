@@ -1,7 +1,7 @@
 package sz.api.doc
 
 import com.fasterxml.jackson.annotation.JsonIgnore
-import sz.api.doc.annotations.Comment
+import sz.api.doc.annotations.Desc
 import sz.api.tools.*
 import kotlin.reflect.KClass
 import kotlin.reflect.full.memberProperties
@@ -13,27 +13,27 @@ import kotlin.reflect.jvm.jvmErasure
 
 class FieldSchema {
 
-    @Comment("在对象树里所处的层级")
+    @Desc("在对象树里所处的层级")
     @JsonIgnore
     var level = 1
 
-    @Comment("方法参数或者返回结果 Reply 中的字段名称")
+    @Desc("方法参数或者返回结果 Reply 中的字段名称")
     var name: String = ""
 
-    @Comment("字段描述")
+    @Desc("字段描述")
     var desc: String = ""
 
-    @Comment("字段的Json数据类型")
+    @Desc("字段的Json数据类型")
     var type: String = ""
 
-    @Comment("字段对应的kotlin类型")
+    @Desc("字段对应的kotlin类型")
     @JsonIgnore
     var kotlin_class: KClass<*>? = null
 
     val className: String
         get() = kotlin_class?.qualifiedName ?: "undefined"
 
-    @Comment("包含的字段, key: 字段名(name)")
+    @Desc("包含的字段, key: 字段名(name)")
     @JsonIgnore
     var fields: MutableMap<String, FieldSchema> = mutableMapOf()
 
@@ -122,9 +122,9 @@ class FieldSchema {
         }
 
         private fun propertyDesc(annotations: List<Annotation>): String {
-            val anno = annotations.find { it is Comment }
+            val anno = annotations.find { it is Desc }
             if (anno != null) {
-                return (anno as Comment).value
+                return (anno as Desc).value
             }
 
             return ""

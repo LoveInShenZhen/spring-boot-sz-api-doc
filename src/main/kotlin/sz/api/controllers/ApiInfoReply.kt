@@ -1,7 +1,7 @@
 package sz.api.controllers
 
 import sz.api.doc.ApiGroup
-import sz.api.doc.annotations.Comment
+import sz.api.doc.annotations.Desc
 import sz.api.reply.ReplyBase
 
 //
@@ -10,6 +10,6 @@ import sz.api.reply.ReplyBase
 @ExperimentalStdlibApi
 class ApiInfoReply : ReplyBase() {
 
-    @Comment("api group 列表")
+    @Desc("api group 列表")
     var api_groups = listOf<ApiGroup>()
 }

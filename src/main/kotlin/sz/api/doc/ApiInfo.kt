@@ -5,7 +5,7 @@ import org.slf4j.LoggerFactory
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.ValueConstants
-import sz.api.doc.annotations.Comment
+import sz.api.doc.annotations.Desc
 import sz.api.tools.JsonDataType
 import sz.api.tools.escapeMarkdown
 import sz.api.tools.toJsonPretty
@@ -23,30 +23,30 @@ import kotlin.reflect.jvm.jvmErasure
 @ExperimentalStdlibApi
 @Suppress("DuplicatedCode", "JoinDeclarationAndAssignment", "SpellCheckingInspection")
 class ApiInfo constructor(
-    @Comment("API url path")
+    @Desc("API url path")
     val path: String,
 
-    @Comment("API http method: GET or POST")
+    @Desc("API http method: GET or POST")
     val httpMethod: String,
 
-    @Comment("API 对应的 Controller 类名称")
+    @Desc("API 对应的 Controller 类名称")
     val controllerClass: String,
 
-    @Comment("API 对应的 Controller 类下的方法名称")
+    @Desc("API 对应的 Controller 类下的方法名称")
     val methodName: String) {
 
-    @Comment("返回的 Replay 对应的类名称")
+    @Desc("返回的 Replay 对应的类名称")
     val replyClass: String
         get() {
             return replyInfo.kotlin_class!!.javaObjectType.name
         }
 
-    @Comment("Post 时 @RequsetBody 注解修饰的参数的类名称")
+    @Desc("Post 时 @RequsetBody 注解修饰的参数的类名称")
     var postDataClass: String = ""
 
     private var postDataKClass: KClass<*>? = null
 
-    @Comment("Post 时 @RequsetBody 注解修饰的参数的样例")
+    @Desc("Post 时 @RequsetBody 注解修饰的参数的样例")
     val postJsonSample: String
         get() {
             return if (postDataKClass == null) {
@@ -56,7 +56,7 @@ class ApiInfo constructor(
             }
         }
 
-    @Comment("Post 时, body 里的json的数据结构描述")
+    @Desc("Post 时, body 里的json的数据结构描述")
     val postJsonSchema: String
         get() {
             return if (this.postDataClass.isNotBlank()) {
@@ -75,31 +75,31 @@ class ApiInfo constructor(
             }
         }
 
-    @Comment("API 接口方法功能描述")
+    @Desc("API 接口方法功能描述")
     var apiComment: String = ""
 
-    @Comment("API 接口方法所属的分组名称")
+    @Desc("API 接口方法所属的分组名称")
     val groupName: String by lazy {
         apiGroup()
     }
 
-    @Comment("Replay 的数据结构信息")
+    @Desc("Replay 的数据结构信息")
     @JsonIgnore
     var replyInfo: FieldSchema
 
-    @Comment("Replay 的数据结构描述")
+    @Desc("Replay 的数据结构描述")
     val replyJsonSchema: String
         get() {
             return replyInfo.JsonSchema()
         }
 
-    @Comment("返回结果样例")
+    @Desc("返回结果样例")
     val replySampleData: String
         get() {
             return SampleJsonData(this.replyInfo.kotlin_class!!)
         }
 
-    @Comment("API 接口参数列表")
+    @Desc("API 接口参数列表")
     var params = mutableListOf<ParameterInfo>()
 
     private val logger = LoggerFactory.getLogger("sz-api-doc")
@@ -138,7 +138,7 @@ class ApiInfo constructor(
 
     private fun apiGroup(): String {
         val controllerClazz = Class.forName(this.controllerClass)
-        val anno = controllerClazz.getAnnotation(Comment::class.java)
+        val anno = controllerClazz.getAnnotation(Desc::class.java)
         return anno?.value ?: this.controllerClass
     }
 
@@ -154,7 +154,7 @@ class ApiInfo constructor(
         val controllerKClazz = Class.forName(this.controllerClass).kotlin
         val method = controllerKClazz.functions.find { it.name == this.methodName }
         // 如果方法上有 @Comment 注解, 则使用其值作为 api 描述
-        val commentAnno = method!!.findAnnotation<Comment>()
+        val commentAnno = method!!.findAnnotation<Desc>()
         if (commentAnno != null) {
             this.apiComment = commentAnno.value
         }
@@ -178,7 +178,7 @@ class ApiInfo constructor(
                     }
 
                     // 检查参数是否有 @Comment 注解, 如果有, 使用注解的内容作为参数描述
-                    val annComment = it.findAnnotation<Comment>()
+                    val annComment = it.findAnnotation<Desc>()
                     if (annComment != null) {
                         paramInfo.desc = annComment.value
                     }
